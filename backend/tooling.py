@@ -35,6 +35,34 @@ tool_list = [get_pc_status, get_weather]
 response = chat(model="gemma4:12b", messages=messages, tools=tool_list, think=False)
 
 messages.append(response.message)
+# --- KODE YANG SALAH ---
+# if response.message.tool_calls:
+#     call = response.message.tool_calls[0]
+#     tool_name = call.function.name
+#     tool_arg = call.function.arguments
+# 
+#     print(tool_name)
+#     print(tool_arg)
+# 
+#     if tool_name == "get_pc_status":
+#         result = get_pc_status()
+#     elif tool_name == "get_weather":
+#         result = get_weather(tool_arg["kota"])
+#     else:
+#         result = "Tool tidak tersedia!"
+# 
+#     messages.append({"role": "tool", "tool_name": tool_name, "content": str(result)})
+# 
+#     final_response = chat(
+#         model="gemma4:12b",
+#         messages=messages,
+#         tools=tool_list,
+#         think=False,
+#     )
+# 
+#     print(final_response.message.content)
+
+# --- KODE YANG SUDAH DIPERBAIKI ---
 if response.message.tool_calls:
     call = response.message.tool_calls[0]
     tool_name = call.function.name
@@ -46,7 +74,7 @@ if response.message.tool_calls:
     if tool_name == "get_pc_status":
         result = get_pc_status()
     elif tool_name == "get_weather":
-        result = get_weather(tool_arg["kota"])
+        result = get_weather(tool_arg.get("kota"))
     else:
         result = "Tool tidak tersedia!"
 
@@ -60,3 +88,5 @@ if response.message.tool_calls:
     )
 
     print(final_response.message.content)
+else:
+    print(response.message.content)

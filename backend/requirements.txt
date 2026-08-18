@@ -1,0 +1,4 @@
+ollama
+psutil
+fastapi
+uvicorn
